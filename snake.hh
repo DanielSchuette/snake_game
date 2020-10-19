@@ -21,6 +21,7 @@ struct Fruit {
 };
 
 class Snake {
+    bool                  is_paused = false;
     uint32_t              x_dir = 0;
     uint32_t              y_dir = 0;
     uint8_t               speed = 20;
@@ -45,6 +46,7 @@ public:
 
     [[noreturn]] void end_game(void);
 
+    void      toggle_pause(void)             { is_paused = !is_paused; }
     uint32_t  get_win_height(void)           { return context.get_height(); }
     uint32_t  get_win_width(void)            { return context.get_width(); }
     SDL_Rect* get_head(void)                 { return &body[0]; }

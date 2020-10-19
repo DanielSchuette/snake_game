@@ -2,7 +2,7 @@
 CC 		   = gcc
 CCFLAGS    = -Wall -Werror -Wpedantic -Wextra --std=c++20 -O0 \
 			 $(shell pkgconf sdl2 --cflags)
-LDFLAGS    = -lm -lSDL2_image -lpthread -lstdc++ \
+LDFLAGS    = -lm -lSDL2_image -lSDL2_ttf -lpthread -lstdc++ \
 			 $(shell pkgconf sdl2 --libs)
 DEBUG_INFO = no
 

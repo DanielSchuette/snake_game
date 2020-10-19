@@ -14,7 +14,7 @@ DEBUG_INFO	Makefile	/^DEBUG_INFO = no$/;"	m
 DEPS	Makefile	/^DEPS 	  = $(SRCS:.cc=.d)$/;"	m
 Fruit	snake.cc	/^Fruit::Fruit(uint32_t size, uint32_t xmax, uint32_t ymax)$/;"	f	class:Fruit
 Fruit	snake.hh	/^struct Fruit {$/;"	s
-LDFLAGS	Makefile	/^LDFLAGS    = -lm -lSDL2_image -lpthread -lstdc++ \\$/;"	m
+LDFLAGS	Makefile	/^LDFLAGS    = -lm -lSDL2_image -lSDL2_ttf -lpthread -lstdc++ \\$/;"	m
 OBJS	Makefile	/^OBJS      = $(SRCS:.cc=.o)$/;"	m
 SRCS	Makefile	/^SRCS      = main.cc context.cc snake.cc utils.cc$/;"	m
 Snake	snake.cc	/^Snake::Snake(uint8_t speed) : x_dir(speed), speed(speed)$/;"	f	class:Snake
@@ -26,8 +26,11 @@ body	snake.hh	/^    std::vector<SDL_Rect> body;$/;"	m	class:Snake
 clear_renderer	context.cc	/^void Context::clear_renderer(void)$/;"	f	class:Context
 context	snake.hh	/^    Context               context;$/;"	m	class:Snake
 copy_and_render	context.cc	/^void Context::copy_and_render(SDL_Texture* texture, SDL_Rect* dest)$/;"	f	class:Context
+draw_text	context.cc	/^void Context::draw_text(const std::string& text, const SDL_Color& color,$/;"	f	class:Context
 end_game	snake.cc	/^void Snake::end_game(void)$/;"	f	class:Snake
+font	context.hh	/^    TTF_Font*       font      = nullptr;$/;"	m	class:Context
 fruit	snake.hh	/^    Fruit                 fruit = Fruit(speed, context.get_width(),$/;"	m	class:Snake
+get_font	context.hh	/^    TTF_Font*     get_font(void) const     { return font; }$/;"	f	class:Context
 get_head	snake.hh	/^    SDL_Rect* get_head(void)                 { return &body[0]; }$/;"	f	class:Snake
 get_height	context.hh	/^    uint32_t      get_height(void) const   { return win_height; }$/;"	f	class:Context
 get_renderer	context.hh	/^    SDL_Renderer* get_renderer(void) const { return renderer; }$/;"	f	class:Context
@@ -38,6 +41,7 @@ get_window	context.hh	/^    SDL_Window*   get_window(void) const   { return wind
 hiscore_file	snake.hh	/^    std::fstream          hiscore_file;$/;"	m	class:Snake
 is_fruit_colliding	snake.cc	/^bool Snake::is_fruit_colliding(const Fruit& fruit)$/;"	f	class:Snake
 is_head_colliding	snake.cc	/^bool Snake::is_head_colliding(void)$/;"	f	class:Snake
+is_paused	snake.hh	/^    bool                  is_paused = false;$/;"	m	class:Snake
 main	main.cc	/^int main(int argc, char** argv)$/;"	f
 operator <<	utils.cc	/^std::ostream& operator<<(std::ostream& os, const SDL_Rect& r)$/;"	f
 operator <=>	snake.cc	/^std::strong_ordering Fruit::operator<=>(const SDL_Rect& other)$/;"	f	class:Fruit
@@ -58,6 +62,7 @@ speed	main.cc	/^uint32_t speed = 1000 \/ 20;$/;"	v
 speed	snake.hh	/^    uint8_t               speed = 20;$/;"	m	class:Snake
 texture_from_surface	snake.cc	/^SDL_Texture* texture_from_surface(const char* path, const Context& ctx)$/;"	f
 title	context.hh	/^    const char*     title     = "Snake Game";$/;"	m	class:Context
+toggle_pause	snake.hh	/^    void      toggle_pause(void)             { is_paused = !is_paused; }$/;"	f	class:Snake
 update_head	snake.cc	/^void Snake::update_head(void)$/;"	f	class:Snake
 update_x	snake.cc	/^void Snake::update_x(int8_t scale)$/;"	f	class:Snake
 update_y	snake.cc	/^void Snake::update_y(int8_t scale)$/;"	f	class:Snake

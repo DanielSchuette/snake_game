@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 #include <thread>
 #include <vector>
@@ -69,6 +70,8 @@ Snake::Snake(uint8_t speed) : x_dir(speed), speed(speed)
 
 void Snake::update_head(void)
 {
+    if (is_paused) return;
+
     SDL_Rect new_head = body[0];
     new_head.x += x_dir;
     new_head.y += y_dir;
@@ -116,12 +119,16 @@ void Snake::show(void)
     SDL_SetRenderDrawColor(context.get_renderer(), 0, 0, 0, 255);
     SDL_RenderFillRect(context.get_renderer(), get_head());
 
+    std::string text = "Score: " + std::to_string(body.size());
+    context.draw_text(text, { 0, 0, 0, 255 }, 0, 0);
+
     context.render_present();
 }
 
 void Snake::update_x(int8_t scale)
 {
     if (x_dir != 0 && body.size() != 1) return;
+    else if (is_paused) return;
     x_dir = scale * speed;
     y_dir = 0;
 }
@@ -129,6 +136,7 @@ void Snake::update_x(int8_t scale)
 void Snake::update_y(int8_t scale)
 {
     if (y_dir != 0 && body.size() != 1) return;
+    else if (is_paused) return;
     y_dir = scale * speed;
     x_dir = 0;
 }

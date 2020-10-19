@@ -32,7 +32,6 @@ int main(int argc, char** argv)
     snake.set_player_name(player_name);
 
     bool quit = false;
-    bool pause = false;
     while (!quit) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -47,33 +46,31 @@ int main(int argc, char** argv)
                     break;
                 case SDL_SCANCODE_W:
                 case SDL_SCANCODE_UP:
-                    if (!pause) snake.update_y(-1);
+                    snake.update_y(-1);
                     break;
                 case SDL_SCANCODE_S:
                 case SDL_SCANCODE_DOWN:
-                    if (!pause) snake.update_y(1);
+                    snake.update_y(1);
                     break;
                 case SDL_SCANCODE_A:
                 case SDL_SCANCODE_LEFT:
-                    if (!pause) snake.update_x(-1);
+                    snake.update_x(-1);
                     break;
                 case SDL_SCANCODE_D:
                 case SDL_SCANCODE_RIGHT:
-                    if (!pause) snake.update_x(1);
+                    snake.update_x(1);
                     break;
                 case SDL_SCANCODE_P:
-                    pause = !pause;
+                    snake.toggle_pause();
                     break;
                 default:
                     fprintf(stderr, "unhandled event type %d\n", event.type);
                 }
             }
         }
-        if (!pause) {
-            snake.update_head();
-            snake.show();
-            SDL_Delay(speed);
-        }
+        snake.update_head();
+        snake.show();
+        SDL_Delay(speed);
     }
 
     return 0;
