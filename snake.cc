@@ -85,9 +85,15 @@ void Snake::update_head(void)
         body.pop_back();
     } else {
         play_audio();
-        do {
-            fruit = Fruit(speed, context.get_width(), context.get_height());
-        } while (is_fruit_colliding(fruit));
+        fruit = Fruit(speed, context.get_width(), context.get_height());
+        while (is_fruit_colliding(fruit)) {
+            if (fruit.rect.x >= speed && fruit.rect.y >= speed) {
+                fruit.rect.x -= speed;
+                fruit.rect.y -= speed;
+            } else {
+                fruit = Fruit(speed, context.get_width(), context.get_height());
+            }
+        }
     }
 }
 
@@ -95,19 +101,19 @@ void Snake::show(void)
 {
     context.clear_renderer();
 
-    SDL_SetRenderDrawColor(context.get_renderer(), 180, 0, 0, 255);
+    SDL_SetRenderDrawColor(context.get_renderer(), 66, 93, 245, 255);
     SDL_RenderFillRect(context.get_renderer(), &fruit.rect);
 
     uint8_t step = 255 / body.size();
     step = step > 1 ? step : 1;
-    uint8_t blue = std::max(255-step, 20);
+    uint8_t green = std::max(255-step, 20);
     for (const SDL_Rect& elem: body) {
-        SDL_SetRenderDrawColor(context.get_renderer(), 0, 0, blue, 255);
+        SDL_SetRenderDrawColor(context.get_renderer(), 0, green, 0, 255);
         SDL_RenderFillRect(context.get_renderer(), &elem);
-        blue = std::max(blue-step, 20);
+        green = std::max(green-step, 20);
     }
 
-    SDL_SetRenderDrawColor(context.get_renderer(), 0, 0, 255, 255);
+    SDL_SetRenderDrawColor(context.get_renderer(), 0, 0, 0, 255);
     SDL_RenderFillRect(context.get_renderer(), get_head());
 
     context.render_present();
@@ -156,16 +162,11 @@ void Snake::end_game(void)
         ps_pair other_scores = read_scores_from_file();
         std::sort(other_scores.begin(), other_scores.end(), std::greater<>());
         std::string msg = "The five highest scores are:\n";
-        msg += std::to_string(other_scores[0].first) + " (" +
-               other_scores[0].second + ")\n";
-        msg += std::to_string(other_scores[1].first) + " (" +
-               other_scores[1].second + ")\n";
-        msg += std::to_string(other_scores[2].first) + " (" +
-               other_scores[2].second + ")\n";
-        msg += std::to_string(other_scores[3].first) + " (" +
-               other_scores[3].second + ")\n";
-        msg += std::to_string(other_scores[4].first) + " (" +
-               other_scores[4].second + ")\n";
+        for (size_t i = 0; i < 5; i++) {
+            if (i < other_scores.size())
+                msg += std::to_string(other_scores[i].first) + " (" +
+                       other_scores[i].second + ")\n";
+        }
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Your score",
                                  msg.c_str(), NULL);
         hiscore_file.close();

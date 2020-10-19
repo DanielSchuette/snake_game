@@ -11,7 +11,7 @@ ifeq ($(DEBUG_INFO), yes)
 endif
 
 BIN       = snake
-BIN_FLAGS = 'my player name'
+BIN_FLAGS = 'my player name' 20
 SRCS      = main.cc context.cc snake.cc utils.cc
 OBJS      = $(SRCS:.cc=.o)
 DEPS 	  = $(SRCS:.cc=.d)

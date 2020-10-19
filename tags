@@ -5,7 +5,7 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 BIN	Makefile	/^BIN       = snake$/;"	m
-BIN_FLAGS	Makefile	/^BIN_FLAGS = 'my player name'$/;"	m
+BIN_FLAGS	Makefile	/^BIN_FLAGS = 'my player name' 20$/;"	m
 CC	Makefile	/^CC 		   = gcc$/;"	m
 CCFLAGS	Makefile	/^CCFLAGS    = -Wall -Werror -Wpedantic -Wextra --std=c++20 -O0 \\$/;"	m
 Context	context.cc	/^Context::Context(void)$/;"	f	class:Context
@@ -27,7 +27,6 @@ clear_renderer	context.cc	/^void Context::clear_renderer(void)$/;"	f	class:Conte
 context	snake.hh	/^    Context               context;$/;"	m	class:Snake
 copy_and_render	context.cc	/^void Context::copy_and_render(SDL_Texture* texture, SDL_Rect* dest)$/;"	f	class:Context
 end_game	snake.cc	/^void Snake::end_game(void)$/;"	f	class:Snake
-fps	main.cc	/^constexpr uint32_t fps = 1000 \/ 20;$/;"	v
 fruit	snake.hh	/^    Fruit                 fruit = Fruit(speed, context.get_width(),$/;"	m	class:Snake
 get_head	snake.hh	/^    SDL_Rect* get_head(void)                 { return &body[0]; }$/;"	f	class:Snake
 get_height	context.hh	/^    uint32_t      get_height(void) const   { return win_height; }$/;"	f	class:Context
@@ -55,6 +54,7 @@ renderer	context.hh	/^    SDL_Renderer*   renderer  = nullptr;$/;"	m	class:Conte
 save_score_to_file	snake.cc	/^void Snake::save_score_to_file(uint32_t score)$/;"	f	class:Snake
 set_player_name	snake.hh	/^    void      set_player_name(const char* n) { player_name = n; }$/;"	f	class:Snake
 show	snake.cc	/^void Snake::show(void)$/;"	f	class:Snake
+speed	main.cc	/^uint32_t speed = 1000 \/ 20;$/;"	v
 speed	snake.hh	/^    uint8_t               speed = 20;$/;"	m	class:Snake
 texture_from_surface	snake.cc	/^SDL_Texture* texture_from_surface(const char* path, const Context& ctx)$/;"	f
 title	context.hh	/^    const char*     title     = "Snake Game";$/;"	m	class:Context
