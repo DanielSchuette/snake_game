@@ -20,8 +20,8 @@ public:
     ~Context(void);
 
     void draw_text(const std::string&, const SDL_Color&, uint32_t, uint32_t);
-    void copy_and_render(SDL_Texture*, SDL_Rect*);
-    void clear_renderer(void);
+    void copy_texture_to_renderer(SDL_Texture*, SDL_Rect*);
+    void clear_renderer(SDL_Color = { 180, 180, 180, 255 });
 
     [[noreturn]] void quit_on_error(const char*) const;
 

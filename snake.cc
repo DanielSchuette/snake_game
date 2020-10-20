@@ -1,9 +1,9 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdlib>
-#include <ctime>
 #include <fstream>
 #include <iostream>
+#include <random>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -14,6 +14,9 @@
 #include "context.hh"
 #include "snake.hh"
 #include "utils.hh"
+
+static std::random_device         rand_device;
+static std::default_random_engine random_generator(rand_device());
 
 SDL_Texture* texture_from_surface(const char* path, const Context& ctx)
 {
@@ -27,21 +30,23 @@ SDL_Texture* texture_from_surface(const char* path, const Context& ctx)
     else         ctx.quit_on_error(SDL_GetError());
 }
 
+// Here, we rely on the fact that tiles are squares, not rectangles.
 Fruit::Fruit(uint32_t size, uint32_t xmax, uint32_t ymax)
 {
-    // NOTE: Potentially buggy (not very well tested, actually).
     assert(size != 0 && xmax != 0 && ymax != 0);
-    srand(time(nullptr));
-
-    rect.x = std::max(rand(), 1) % xmax;
-    rect.x = std::max(rect.x, 1);
-    rect.x = rect.x - (rect.x % size);
-
-    rect.y = std::max(rand(), 1) % ymax;
-    rect.y = std::max(rect.y, 1);
-    rect.y = rect.y - (rect.y % size);
-
     rect.h = rect.w = size;
+
+    // probably fragile (subtract 1 because with exact divisibility, we might
+    // end up placing a fruit one tile beyond the playing field)
+    uint32_t num_tiles_x = xmax / size - 1;
+    uint32_t num_tiles_y = ymax / size - 1;
+    std::uniform_int_distribution<int> xdist(0, num_tiles_x);
+    std::uniform_int_distribution<int> ydist(0, num_tiles_y);
+
+    rect.x = xdist(random_generator) * size;
+    rect.y = ydist(random_generator) * size;
+    assert((uint32_t)rect.x <= xmax && rect.x >= 0);
+    assert((uint32_t)rect.y <= ymax && rect.y >= 0);
 }
 
 std::strong_ordering Fruit::operator<=>(const SDL_Rect& other)
@@ -100,6 +105,12 @@ void Snake::update_head(void)
     }
 }
 
+/* IMPROVE: We should really separate rendering from game logic. The snake
+ *          object might handle speed and updating its body, but the context
+ *          should be handed everything that needs rendering. Maybe a queue,
+ *          that's filled with rectangles by the snake and rendered by the
+ *          context - then being the only step in `show()'.
+ */
 void Snake::show(void)
 {
     context.clear_renderer();
@@ -151,7 +162,7 @@ bool Snake::is_head_colliding(void)
 }
 
 /* When ending a game, we open two text boxes (showing the player's score and
- * the top 5 highscores) and call `exit(0)'. This function is really messy.
+ * the top 5 highscores) and call `exit(0)'. This function is somewhat messy.
  */
 void Snake::end_game(void)
 {
@@ -162,9 +173,7 @@ void Snake::end_game(void)
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "You lost!",
                              msg.c_str(), NULL);
 
-    /* This will immediately crash if there are less then 5 entries in the
-     * highscores file. Probably no need to make this more robust, though.
-     */
+    // display the top 5 scores on the screen
     if (hiscore_file.is_open()) {
         save_score_to_file(score);
         ps_pair other_scores = read_scores_from_file();

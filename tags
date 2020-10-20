@@ -23,9 +23,9 @@ _CONTEXT_H_	context.hh	2;"	d
 _SNAKE_H_	snake.hh	2;"	d
 _UTILS_H_	utils.hh	2;"	d
 body	snake.hh	/^    std::vector<SDL_Rect> body;$/;"	m	class:Snake
-clear_renderer	context.cc	/^void Context::clear_renderer(void)$/;"	f	class:Context
+clear_renderer	context.cc	/^void Context::clear_renderer(SDL_Color c)$/;"	f	class:Context
 context	snake.hh	/^    Context               context;$/;"	m	class:Snake
-copy_and_render	context.cc	/^void Context::copy_and_render(SDL_Texture* texture, SDL_Rect* dest)$/;"	f	class:Context
+copy_texture_to_renderer	context.cc	/^void Context::copy_texture_to_renderer(SDL_Texture* texture, SDL_Rect* dest)$/;"	f	class:Context
 draw_text	context.cc	/^void Context::draw_text(const std::string& text, const SDL_Color& color,$/;"	f	class:Context
 end_game	snake.cc	/^void Snake::end_game(void)$/;"	f	class:Snake
 font	context.hh	/^    TTF_Font*       font      = nullptr;$/;"	m	class:Context
@@ -51,6 +51,7 @@ player_name	main.cc	/^char* player_name;$/;"	v
 player_name	snake.hh	/^    const char*           player_name;$/;"	m	class:Snake
 ps_pair	snake.hh	/^typedef std::vector<std::pair<uint32_t, std::string>> ps_pair;$/;"	t
 quit_on_error	context.cc	/^void Context::quit_on_error(const char* msg) const$/;"	f	class:Context
+rand_device	snake.cc	/^static std::random_device         rand_device;$/;"	v	file:
 read_scores_from_file	snake.cc	/^ps_pair Snake::read_scores_from_file(void)$/;"	f	class:Snake
 rect	snake.hh	/^    SDL_Rect rect;$/;"	m	struct:Fruit
 render_present	context.hh	/^    void          render_present(void)     { SDL_RenderPresent(renderer); }$/;"	f	class:Context

@@ -20,7 +20,7 @@ Context::Context(void)
     if (!success) std::cerr << "unable to set hint\n";
 
     window = SDL_CreateWindow(title, win_x_pos, win_y_pos, win_width,
-                              win_height, 0);
+                              win_height, SDL_WINDOW_SHOWN);
     if (!window) quit_on_error(SDL_GetError());
 
     uint32_t render_flags = SDL_RENDERER_ACCELERATED;
@@ -41,26 +41,24 @@ Context::~Context(void)
     SDL_Quit();
 }
 
-void Context::copy_and_render(SDL_Texture* texture, SDL_Rect* dest)
-{
-    SDL_RenderCopy(renderer, texture, NULL, dest);
-    render_present();
-}
-
 void Context::quit_on_error(const char* msg) const
 {
     std::cerr << "error: " << msg << '\n';
     exit(1);
 }
 
-// Clear the background. Currently, the color is hard-coded.
-void Context::clear_renderer(void)
+/* Clear the background. Currently, the default color is hard-coded in the
+ * header (as a default argument, not a class attribute).
+ */
+void Context::clear_renderer(SDL_Color c)
 {
-    SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
     SDL_RenderClear(renderer);
 }
 
-// Draw text onto the screen. The caller must still invoke `render_present()'.
+/* Copy text to the renderer. The caller must still invoke `render_present()'.
+ * The standard font set for this context is used.
+ */
 void Context::draw_text(const std::string& text, const SDL_Color& color,
                         uint32_t x, uint32_t y)
 {
@@ -71,7 +69,17 @@ void Context::draw_text(const std::string& text, const SDL_Color& color,
     r.x = x;
     r.y = y;
     SDL_QueryTexture(tx, NULL, NULL, &r.w, &r.h);
-    SDL_RenderCopy(renderer, tx, NULL, &r);
+    copy_texture_to_renderer(tx, &r);
     SDL_FreeSurface(sf);
     SDL_DestroyTexture(tx);
 }
+
+/* Copy a texture to the renderer. The caller must still invoke
+ * `render_present()'. We use this function for better naming and convenience,
+ * since we usually don't specify any copy flags.
+ */
+void Context::copy_texture_to_renderer(SDL_Texture* texture, SDL_Rect* dest)
+{
+    SDL_RenderCopy(renderer, texture, NULL, dest);
+}
+
