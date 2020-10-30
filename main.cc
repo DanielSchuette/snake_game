@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     }
     speed = 1000 / div;
 
-    const uint32_t square_size = 20;
+    const uint32_t square_size = 30;
     Snake snake(square_size);
     snake.set_player_name(player_name);
 

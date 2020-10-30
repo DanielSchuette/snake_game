@@ -13,8 +13,8 @@ class Context {
     const char*     title     = "Snake Game";
     const uint32_t win_x_pos  = SDL_WINDOWPOS_CENTERED;
     const uint32_t win_y_pos  = SDL_WINDOWPOS_CENTERED;
-    const uint32_t win_width  = 800;
-    const uint32_t win_height = 640;
+    const uint32_t win_width  = 2100;
+    const uint32_t win_height = 1200;
 public:
     Context(void);
     ~Context(void);
