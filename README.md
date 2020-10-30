@@ -1,11 +1,12 @@
-# Snake Game
-The classic [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre) video game, built using SDL2 and basic C++. This is a personal project to explore the capabilities of SDL2.
+# Snake
+A simple example of writing a mini-game in `C++` with `SDL2`. Compile using
+`make`. The SDL core library as well as `sdl_ttf` and `sdl_image` are required.
+Because of potential copyright issues, assets aren't included. Thus, you need
+to include a font as well as appropriate sound files yourself (or remove the
+related code).
 
-```bash
-make all                      # build the game
-./snake <player_name> <speed> # play the game
-make clean                    # clean up build artifacts
-```
+# Demo
+![Demo Gif](./demo.gif)
 
 # License
-The game uses audio and font assets which aren't included in this repository (just because I don't know if I'm allowed to re-publish those). All code in here is licensed under an [MIT license](./LICENSE.md)
+This code is licensed under a [GPLv3 license](./LICENSE.md).
